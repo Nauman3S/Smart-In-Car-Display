@@ -1,80 +1,84 @@
 try:
-    import Tkinter as tk
-    import tkFont
-    import ttk
-except ImportError:  # Python 3
-    import tkinter as tk
-    import tkinter.font as tkFont
-    import tkinter.ttk as ttk
+    import tkinter as tk                # python 3
+    from tkinter import font as tkfont  # python 3
+except ImportError:
+    import Tkinter as tk     # python 2
+    import tkFont as tkfont  # python 2
 
-class CircularProgressbar(object):
-    def __init__(self, canvas, x0, y0, x1, y1, width=2, start_ang=0, full_extent=360):
-        self.custom_font = tkFont.Font(family="Helvetica", size=12, weight='bold')
-        self.cur_extent=0
-        self.canvas = canvas
-        self.x0, self.y0, self.x1, self.y1 = x0+width, y0+width, x1-width, y1-width
-        self.tx, self.ty = (x1-x0) / 2, (y1-y0) / 2
-        self.width = width
-        self.start_ang, self.full_extent = start_ang, full_extent
-        # draw static bar outline
-        w2 = width / 2
-        self.oval_id1 = self.canvas.create_oval(self.x0-w2, self.y0-w2,
-                                                self.x1+w2, self.y1+w2)
-        self.oval_id2 = self.canvas.create_oval(self.x0+w2, self.y0+w2,
-                                                self.x1-w2, self.y1-w2)
-        self.running = False
+class SampleApp(tk.Tk):
 
-    def start(self, interval=100):
-        self.interval = interval
-        self.increment = self.full_extent / interval
-        self.extent = 0
-        self.arc_id = self.canvas.create_arc(self.x0, self.y0, self.x1, self.y1,
-                                             start=self.start_ang, extent=self.extent,
-                                             width=self.width, style='arc')
-        percent = '0%'
-        self.label_id = self.canvas.create_text(self.tx, self.ty, text=percent,
-                                                font=self.custom_font)
-        self.running = True
-        self.canvas.after(interval, self.step, self.increment)
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
 
-    def step(self, delta):
-        """Increment extent and update arc and label displaying how much completed."""
-        if self.running:
-            self.cur_extent = (self.cur_extent + delta) % 360
-            self.canvas.itemconfigure(self.arc_id, extent=self.cur_extent)
-            percent = '{:.0f}%'.format(round(float(self.cur_extent) / self.full_extent * 100))
-            self.canvas.itemconfigure(self.label_id, text=percent)
+        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
-        self.after_id = self.canvas.after(self.interval, self.step, delta)
+        # the container is where we'll stack a bunch of frames
+        # on top of each other, then the one we want visible
+        # will be raised above the others
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-    def toggle_pause(self):
-        self.running = not self.running
+        self.frames = {}
+        for F in (StartPage, PageOne, PageTwo):
+            page_name = F.__name__
+            frame = F(parent=container, controller=self)
+            self.frames[page_name] = frame
 
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        tk.Frame.__init__(self, master)
-        self.grid()
-        self.createWidgets()
+            # put all of the pages in the same location;
+            # the one on the top of the stacking order
+            # will be the one that is visible.
+            frame.grid(row=0, column=0, sticky="nsew")
 
-    def createWidgets(self):
-        self.canvas = tk.Canvas(self, width=200, height=200, bg='white')
-        self.canvas.grid(row=0, column=0, columnspan=2)
+        self.show_frame("StartPage")
 
-        self.progressbar = CircularProgressbar(self.canvas, 0, 0, 200, 200, 20)
+    def show_frame(self, page_name):
+        '''Show a frame for the given page name'''
+        frame = self.frames[page_name]
+        frame.tkraise()
 
-        self.pauseButton = tk.Button(self, text='Pause', command=self.pause)
-        self.pauseButton.grid(row=1, column=0)
-        self.quitButton = tk.Button(self, text='Quit', command=self.quit)
-        self.quitButton.grid(row=1, column=1)
 
-    def start(self):
-        self.progressbar.start()
-        self.mainloop()
+class StartPage(tk.Frame):
 
-    def pause(self):
-        self.progressbar.toggle_pause()
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="This is the start page", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
 
-if __name__ == '__main__':
-    app = Application()
-    app.master.title('Sample application')
-    app.start()
+        button1 = tk.Button(self, text="Go to Page One",
+                            command=lambda: controller.show_frame("PageOne"))
+        button2 = tk.Button(self, text="Go to Page Two",
+                            command=lambda: controller.show_frame("PageTwo"))
+        button1.pack()
+        button2.pack()
+
+
+class PageOne(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="This is page 1", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button = tk.Button(self, text="Go to the start page",
+                           command=lambda: controller.show_frame("StartPage"))
+        button.pack()
+
+
+class PageTwo(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="This is page 2", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button = tk.Button(self, text="Go to the start page",
+                           command=lambda: controller.show_frame("StartPage"))
+        button.pack()
+
+
+if __name__ == "__main__":
+    app = SampleApp()
+    app.mainloop()
