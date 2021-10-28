@@ -6,7 +6,10 @@ import datetime
 from commHandler import *
 from MPU6050Handler import *
 from DHT22Handler import *
+from touchHandler import *
+from brightnessController import *
 
+brightnessCounter=0
 # start from 60 and clockwise
 seconds_coords = [[220, 10], []]
 root = Tk()
@@ -76,8 +79,11 @@ def timeSet(hr, mn, sc, dt, dy):
 
 
 def touchFunc(n):
-    global activeFrame
+    global activeFrame, brightnessCounter
     print('screen touched')
+    if(brightnessCounter>=12):
+        setBrightness(100)
+    brightnessCounter=0#reset brightness
     if(activeFrame == 0):
         activeFrame = 1
         container2.place(x=0, y=0)
@@ -92,10 +98,14 @@ def touchFunc(n):
 
 def updateData():
     global humid_var, inside_temp_var, outside_temp_var, time_hr_var, time_mn_var, time_sc_var
+    global brightnessCounter
     now = datetime.datetime.now()
     humid_var.set(str(getTHArray()[1]))
     inside_temp_var.set(str(getTHArray()[0]))
     outside_temp_var.set(str(getTHArray()[2]))
+    brightnessCounter=brightnessCounter+1
+    if(brightnessCounter>=12):
+        setBrightness(15)
     # if(len(str(now.hour)) == 1):
 
     #     time_hr_var.set("0"+str(now.hour))

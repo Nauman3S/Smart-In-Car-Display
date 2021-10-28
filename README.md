@@ -77,6 +77,7 @@ A step by step series that covers how to get the Firmware running.
   - ```sudo pip3 install pillow```
   - ```sudo pip3 install python3-dev```
   - ```sudo python3 -m pip install --upgrade pip setuptools wheel```
+  - ```sudo pip3 install hyperpixel2r```
   - ```sudo pip3 install Adafruit_DHT```
   - ```git clone https://github.com/pimoroni/hyperpixel2r```
   - ```cd hyperpixel2r```
