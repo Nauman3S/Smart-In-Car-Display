@@ -16,7 +16,7 @@ except Exception as e:
 
 
 
-@touch.on_touch
+# @touch.on_touch
 def handle_touch(touch_id, x, y, state):
     try:
         display.touch(x, y, state)

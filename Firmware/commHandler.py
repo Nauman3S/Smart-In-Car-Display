@@ -1,6 +1,10 @@
-import serial
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
+import serial
+try:
+    ser = serial.Serial('/dev/ttyACM0', 9600)
+except Exception as e:
+    print('e',e)
+
 s = [0]
 
 dataPacket = ""
@@ -36,7 +40,10 @@ def integrtiyCheck(val):
 
 print(crc8(b'test'))
 
-ser.flush()
+try:
+    ser.flush()
+except Exception as e:
+    print('e',e)
 
 
 def dimmingHandler(val):

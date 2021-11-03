@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import *
+# import pyglet
 from PIL import Image, ImageTk
 import random
 import datetime
@@ -9,7 +10,10 @@ from DHT22Handler import *
 from touchHandler import *
 from brightnessController import *
 
-brightnessCounter=0
+# pyglet.font.add_file('artwork/3ds-maisfont/3ds.ttf')
+
+
+brightnessCounter = 0
 # start from 60 and clockwise
 seconds_coords = [[220, 10], []]
 root = Tk()
@@ -20,6 +24,9 @@ container1.place(x=0, y=0)
 container2 = tkinter.Frame(root, width=480, height=480)
 container2.place(x=0, y=0)
 container2.place_forget()
+container3 = tkinter.Frame(root, width=480, height=480)
+container3.place(x=0, y=0)
+container3.place_forget()
 
 
 humid_var = tkinter.StringVar()
@@ -51,6 +58,15 @@ y1_var.set("0")
 y2_var.set("0")
 
 
+batt_temp1 = tkinter.StringVar()
+batt_temp2 = tkinter.StringVar()
+batt_temp3 = tkinter.StringVar()
+batt_volts = tkinter.StringVar()
+batt_temp1.set('0')
+batt_temp2.set('0')
+batt_temp3.set('0')
+batt_volts.set('0')
+
 root.geometry("480x480+0+0")
 
 # Create a photoimage object of the image in the path
@@ -68,6 +84,12 @@ labeli2 = tkinter.Label(container2, image=test2)
 labeli2.image = test2
 labeli2.place(x=0, y=0)
 
+image3 = Image.open("artwork/Widgets/Battery/BatteryWithoutData.png")
+test3 = ImageTk.PhotoImage(image3)
+labeli3 = tkinter.Label(container3, image=test3)
+labeli3.image = test3
+labeli3.place(x=0, y=0)
+
 
 def timeSet(hr, mn, sc, dt, dy):
     global time_hr_var, time_mn_var, time_sc_var, time_date_var, time_day_var
@@ -81,19 +103,25 @@ def timeSet(hr, mn, sc, dt, dy):
 def touchFunc(n):
     global activeFrame, brightnessCounter
     print('screen touched')
-    if(brightnessCounter>=12):
+    if(brightnessCounter >= 12):
         setBrightness(100)
-    brightnessCounter=0#reset brightness
+    brightnessCounter = 0  # reset brightness
     if(activeFrame == 0):
         activeFrame = 1
         container2.place(x=0, y=0)
         container1.place_forget()
         container2.tkraise()
     elif(activeFrame == 1):
-        activeFrame = 0
+        activeFrame = 2
         container1.place(x=0, y=0)
         container2.place_forget()
         container1.tkraise()
+    elif(activeFrame == 2):
+        activeFrame = 0
+        container3.place(x=0, y=0)
+        container1.place_forget()
+        
+        container3.tkraise()
 
 
 def updateData():
@@ -103,8 +131,8 @@ def updateData():
     humid_var.set(str(getTHArray()[1]))
     inside_temp_var.set(str(getTHArray()[0]))
     outside_temp_var.set(str(getTHArray()[2]))
-    brightnessCounter=brightnessCounter+1
-    if(brightnessCounter>=12):
+    brightnessCounter = brightnessCounter+1
+    if(brightnessCounter >= 12):
         setBrightness(15)
     # if(len(str(now.hour)) == 1):
 
@@ -141,15 +169,19 @@ def updateGForceData():
 
 def serialListner():
     global ser, dataPacket
-    if (ser.in_waiting > 0):
-        line = ser.readline()
-        lineDec = line.decode('utf-8').rstrip()
-        print('data received: ', lineDec)
-        print('crc calculated', crc8(line))
-        if(integrtiyCheck(lineDec)):
-            dataPacket = lineDec
-        else:
-            dataPacket = ""
+    serER = 0
+    try:
+        if (ser.in_waiting > 0):
+            line = ser.readline()
+            lineDec = line.decode('utf-8').rstrip()
+            print('data received: ', lineDec)
+            print('crc calculated', crc8(line))
+            if(integrtiyCheck(lineDec)):
+                dataPacket = lineDec
+            else:
+                dataPacket = ""
+    except Exception as e:
+        serER = 1
     root.after(100, serialListner)
 
 
@@ -169,47 +201,68 @@ def dataProcess():
 
 
 humid_label = tkinter.Label(container1, textvariable=humid_var, font=(
-    "Arial", 20), fg='white', bg='black')
-humid_label.place(x=220, y=85)
+    "Arial", 30), fg='white', bg='#071025')
+humid_label.place(x=240, y=75)
 
 inside_temp = tkinter.Label(container1, textvariable=inside_temp_var, font=(
-    "Arial", 20), fg='white', bg='black')
-inside_temp.place(x=350, y=300)
+    "Arial", 30), fg='white', bg='#071025')
+inside_temp.place(x=380, y=220)
 
 outside_temp = tkinter.Label(container1, textvariable=outside_temp_var, font=(
-    "Arial", 20), fg='white', bg='black')
-outside_temp.place(x=95, y=300)
+    "Arial", 30), fg='white', bg='#071025')
+outside_temp.place(x=80, y=220)
 
 
 time_hr = tkinter.Label(container1, textvariable=time_hr_var,
-                        font=("Helvetica", 70), fg='white', bg='black')
-time_hr.place(x=180, y=150)
+                        font=("Helvetica", 70), fg='white', bg='#071025')
+time_hr.place(x=180, y=120)
 time_mn = tkinter.Label(container1, textvariable=time_mn_var,
-                        font=("Helvetica", 70), fg='white', bg='black')
-time_mn.place(x=180, y=250)
+                        font=("Helvetica", 70), fg='white', bg='#071025')
+time_mn.place(x=180, y=210)
 
 
 time_sc = tkinter.Label(container1, textvariable=time_sc_var,
-                        font=("Helvetica", 45), fg='white', bg='black')
-time_sc.place(x=200, y=350)
+                        font=("Helvetica", 45), fg='white', bg='#071025')
+time_sc.place(x=200, y=310)
 
 
 # gforce layout
 
 y1 = tkinter.Label(container2, textvariable=y1_var, font=(
-    "Arial", 16), fg='green', bg='black')
+    "Arial", 16), fg='green', bg='#071025')
 y1.place(x=230, y=80)
 y1 = tkinter.Label(container2, textvariable=y2_var, font=(
-    "Arial", 16), fg='white', bg='black')
+    "Arial", 16), fg='white', bg='#071025')
 y1.place(x=230, y=350)
 
 x2 = tkinter.Label(container2, textvariable=x2_var, font=(
-    "Arial", 16), fg='red', bg='black')
+    "Arial", 16), fg='red', bg='#071025')
 x2.place(x=360, y=230)
 
 x1 = tkinter.Label(container2, textvariable=x1_var, font=(
-    "Arial", 16), fg='purple', bg='black')
+    "Arial", 16), fg='purple', bg='#071025')
 x1.place(x=85, y=230)
+
+
+# battery layout
+
+batt_t1 = tkinter.Label(container3, textvariable=batt_temp1, font=(
+    "Arial", 40), fg='white', bg='#071025')
+batt_t1.place(x=220, y=70)
+
+batt_t2 = tkinter.Label(container3, textvariable=batt_temp2, font=(
+    "Arial", 40), fg='white', bg='#071025')
+batt_t2.place(x=370, y=160)
+
+batt_t3 = tkinter.Label(container3, textvariable=batt_temp2, font=(
+    "Arial", 40), fg='white', bg='#071025')
+batt_t3.place(x=220, y=340)
+
+batt_vol = tkinter.Label(container3, textvariable=batt_volts, font=(
+    "Arial", 40), fg='white', bg='#071025')
+batt_vol.place(x=70, y=170)
+
+
 
 
 root.after(1000, updateData)
