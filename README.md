@@ -75,6 +75,7 @@ A step by step series that covers how to get the Firmware running.
   - ```sudo apt-get upgrade```
   - ```sudo apt install python3-pip```
   - ```sudo pip3 install pillow```
+  - ```sudo apt-get install python3-pil python3-pil.imagetk```
   - ```sudo pip3 install python3-dev```
   - ```sudo python3 -m pip install --upgrade pip setuptools wheel```
   - ```sudo pip3 install hyperpixel2r```
