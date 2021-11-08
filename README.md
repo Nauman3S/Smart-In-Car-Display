@@ -170,7 +170,6 @@ Pins connections
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [Python3](https://www.python.org/) - Raspberry Pi FW
-- [Flutter](https://flutter.dev/) - Cross-Platform Smartphone App Development Framework
 
 ## ✍️ Authors <a name = "authors"></a>
 
