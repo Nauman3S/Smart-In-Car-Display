@@ -85,4 +85,4 @@ done | whiptail --title 'Smart In-Car Display Installer' --gauge "${phases[0]}" 
 
 whiptail --title "Smart In-Car Display Installer" --msgbox "Installed!" 8 70
 
-# curl -sSL https://raw.githubusercontent.com/Nauman3S/Smart-In-Car-Display/Firmware/installer.sh | bash
+# curl -sSL https://raw.githubusercontent.com/Nauman3S/Smart-In-Car-Display/main/Firmware/installer.sh | bash
