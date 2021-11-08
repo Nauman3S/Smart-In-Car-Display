@@ -79,7 +79,7 @@ for i in $(seq 1 100); do
             echo "Found startup script. Doing nothing."
         else
             echo "Not Found. Adding startup script"
-            sed -i -e '$i \(sleep 10; sh /home/pi/SmartInCarDisplay/Firmware/starter.sh)&\n' /etc/rc.local
+            sudo sed -i -e '$i \(sleep 10; sh /home/pi/SmartInCarDisplay/Firmware/starter.sh)&\n' /etc/rc.local
         fi
     fi
 done | whiptail --title 'Smart In-Car Display Installer' --gauge "${phases[0]}" 8 70 0
