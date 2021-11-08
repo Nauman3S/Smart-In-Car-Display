@@ -75,9 +75,9 @@ for i in $(seq 1 100); do
     elif [ $i -eq 90 ]; then
         File="/etc/rc.local"
         if [[ $(grep "(sleep 10; sh /home/pi/SmartInCarDisplay/Firmware/starter.sh)&" $File) ]] ; then
-            # echo "Found startup script. Doing nothing."
+            echo "Found startup script. Doing nothing."
         else
-            # echo "Not Found. Adding startup script"
+            echo "Not Found. Adding startup script"
             sed -i -e '$i \(sleep 10; sh /home/pi/SmartInCarDisplay/Firmware/starter.sh)&\n' /etc/rc.local
         fi
     fi
