@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 sudo apt install whiptail -y
 
 phases=( 
@@ -74,7 +75,7 @@ for i in $(seq 1 100); do
         sudo ./install.sh
     elif [ $i -eq 90 ]; then
         File="/etc/rc.local"
-        if [[ $(grep "(sleep 10; sh /home/pi/SmartInCarDisplay/Firmware/starter.sh)&" $File) ]] ; then
+        if [[ $(grep "(sleep 10; sh /home/pi/SmartInCarDisplay/Firmware/starter.sh)&" $File) ]]; then
             echo "Found startup script. Doing nothing."
         else
             echo "Not Found. Adding startup script"
