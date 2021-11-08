@@ -34,11 +34,9 @@ for i in $(seq 1 100); do
             # mkdir ~/RPiClient
             git clone https://github.com/Nauman3S/Smart-In-Car-Display.git;
             cd Smart-In-Car-Display;
-            git sparse-checkout set Firmware
-            mkdir SmartInCarDisplay
-            mkdir SmartInCarDisplay/Firmware
-            mkdir SmartInCarDisplay/temp
-            mv Firmware ../SmartInCarDisplay/Firmware
+            mkdir ../SmartInCarDisplay;
+            mkdir ../SmartInCarDisplay/temp;
+            mv Firmware ../SmartInCarDisplay/Firmware;
             cd ..
             rm -rf Smart-In-Car-Display
             cd SmartInCarDisplay/Firmware
@@ -50,7 +48,7 @@ for i in $(seq 1 100); do
             echo "Directory SmartInCarDisplay/logs exists."
         else
             echo "Error: Directory SmartInCarDisplay/logs does not exists."
-        mkdir ~/SmartInCarDisplay/logs
+            mkdir ~/SmartInCarDisplay/logs
         fi
     elif [ $i -eq 10 ]; then
         sudo apt-get update &>/dev/null
@@ -68,7 +66,7 @@ for i in $(seq 1 100); do
         sudo pip3 install hyperpixel2r
     elif [ $i -eq 40 ]; then
         sudo pip3 install Adafruit_DHT
-    elif [ $i -eq 50 ]; then
+    elif [ $i -eq 80 ]; then
         cd $HOME
         cd SmartInCarDisplay/temp
         git clone https://github.com/pimoroni/hyperpixel2r
