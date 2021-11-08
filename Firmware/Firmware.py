@@ -52,10 +52,10 @@ y2_var = tkinter.StringVar()
 x1_var = tkinter.StringVar()
 x2_var = tkinter.StringVar()
 
-x2_var.set("0")
-x1_var.set("0")
-y1_var.set("0")
-y2_var.set("0")
+x2_var.set(".")
+x1_var.set(".")
+y1_var.set(".")
+y2_var.set(".")
 
 
 batt_temp1 = tkinter.StringVar()
@@ -154,15 +154,16 @@ def updateData():
 
 
 def updateGForceData():
-    global x1_var, x2_var, y1_var, y2_var
+    global x1_var, x2_var, y1_var, y2_var,gforceData
 
     loopGyro()
     loopTempHumidSensors()
-
-    y1_var.set(str(getGyroData()[0]))
-    y2_var.set(str(getGyroData()[1]))
-    x1_var.set(str(getGyroData()[2]))
-    x2_var.set(str(getGyroData()[3]))
+    y1.place(x=gforceData[0], y=gforceData[1])
+    
+    # y1_var.set(str(getGyroData()[0]))
+    # y2_var.set(str(getGyroData()[1]))
+    # x1_var.set(str(getGyroData()[2]))
+    # x2_var.set(str(getGyroData()[3]))
 
     root.after(500, updateGForceData)
 
@@ -229,19 +230,19 @@ time_sc.place(x=200, y=310)
 # gforce layout
 
 y1 = tkinter.Label(container2, textvariable=y1_var, font=(
-    "Arial", 16), fg='green', bg='#071025')
+    "Arial", 8, 'bold'), fg='yellow', bg='yellow', height=1, width=1)
 y1.place(x=230, y=80)
-y1 = tkinter.Label(container2, textvariable=y2_var, font=(
-    "Arial", 16), fg='white', bg='#071025')
-y1.place(x=230, y=350)
+# y1 = tkinter.Label(container2, textvariable=y2_var, font=(
+#     "Arial", 16), fg='white', bg='#071025')
+# y1.place(x=230, y=350)
 
-x2 = tkinter.Label(container2, textvariable=x2_var, font=(
-    "Arial", 16), fg='red', bg='#071025')
-x2.place(x=360, y=230)
+# x2 = tkinter.Label(container2, textvariable=x2_var, font=(
+#     "Arial", 16), fg='red', bg='#071025')
+# x2.place(x=360, y=230)
 
-x1 = tkinter.Label(container2, textvariable=x1_var, font=(
-    "Arial", 16), fg='purple', bg='#071025')
-x1.place(x=85, y=230)
+# x1 = tkinter.Label(container2, textvariable=x1_var, font=(
+#     "Arial", 16), fg='purple', bg='#071025')
+# x1.place(x=85, y=230)
 
 
 # battery layout

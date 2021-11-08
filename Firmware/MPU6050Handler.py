@@ -68,14 +68,17 @@ except Exception as e:
 print("Reading Data of Gyroscope")
 
 mpudata = [0, 0, 0, 0]
+gforceData=[0,0]
 
 
 def getGyroData():
     return mpudata
 
+def _map(x, in_min, in_max, out_min, out_max):
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def loopGyro():
-    global mpudata
+    global mpudata, gforceData
     try:
 
         # Read Accelerometer raw value
@@ -97,12 +100,17 @@ def loopGyro():
         Gy = gyro_y/131.0
         Gz = gyro_z/131.0
 
-        mpudata[0] = Gx
-        mpudata[1] = Gy
-        mpudata[2] = Gz
-        mpudata[3] = Ax
+        mpudata[0] = Ax
+        mpudata[1] = Ay
+        mpudata[2] = Az
+        mpudata[3] = Gx
+        gforceData[0]=_map(Ax, -2, 2, 30, 440)
+        gforceData[1]=_map(Ay, -2, 2, 30, 440)
+
     except Exception as e:
         mpuAvailable=0
+        gforceData[0]=_map(0, -2, 2, 30, 440)
+        gforceData[1]=_map(0, -2, 2, 30, 440)
 
     # print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)
     # sleep(1)

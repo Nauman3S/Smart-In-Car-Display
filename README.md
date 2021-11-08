@@ -69,6 +69,7 @@ A step by step series that covers how to get the Firmware running.
 * ![R2](artwork/r2_2.jpg)
 
 ### Auto Installer
+* Follow the instructions above before continuing to this section
 To install and Run Firmware Automatically just run the following command on your Raspberry Pi terminal
 
 - ```curl -sSL https://raw.githubusercontent.com/Nauman3S/Smart-In-Car-Display/main/Firmware/installer.sh | bash```
@@ -96,6 +97,25 @@ To install and Run Firmware Manually run the following commands on your Raspberr
 1.  To run the program just double click on starter.sh file
   1.  or execute `python3 /home/pi/Desktop/Firmware/Firmware.py`
 
+
+
+### Removing Un-necessary Packages
+
+Open the terminal and execute the following commands
+- sudo apt-get remove --purge libreoffice*
+- sudo apt-get remove --purge scratch
+- sudo apt-get remove --purge scratch2
+- sudo apt-get remove wolfram-engine
+- sudo apt-get remove geany
+- sudo apt-get clean
+- sudo apt-get autoremove
+- sudo nano /boot/config.txt
+At the bottom of the file add these lines
+* disable_splash=1
+* dtoverlay=disable-bt
+* boot_delay=0
+
+Press CTRL+O and CTRL+X to save the settings and exit.
 
 ## ⛏️ Testing <a name = "test"></a>
 
