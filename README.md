@@ -68,7 +68,13 @@ A step by step series that covers how to get the Firmware running.
 
 * ![R2](artwork/r2_2.jpg)
 
-### Configuring Raspberry Pi and Running the UI
+### Auto Installer
+To install and Run Firmware Automatically just run the following command on your Raspberry Pi terminal
+
+- ```curl -sSL https://raw.githubusercontent.com/Nauman3S/Smart-In-Car-Display/main/Firmware/installer.sh | bash```
+### Configuring Raspberry Pi and Running the UI (Manual)
+To install and Run Firmware Manually run the following commands on your Raspberry Pi terminal
+
   1.  Copy Firmware folder to the desktop of your Raspberry Pi, open the terminal of your Raspberry Pi and execute the following commands
 
   - ```sudo apt-get update```
