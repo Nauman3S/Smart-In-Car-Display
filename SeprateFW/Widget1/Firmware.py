@@ -1,3 +1,5 @@
+import os
+# os.environ["SDL_VIDEO_CENTERED"] = "1"
 import tkinter
 from tkinter import *
 # import pyglet
@@ -16,6 +18,10 @@ brightnessCounter = 0
 # start from 60 and clockwise
 seconds_coords = [[220, 10], []]
 root = Tk()
+root.eval('tk::PlaceWindow . center')
+x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
+y = (root.winfo_screenheight() - root.winfo_reqheight()) / 2
+root.geometry("+%d+%d" % (x, y))
 activeFrame = 0
 
 container1 = tkinter.Frame(root, width=480, height=480)
